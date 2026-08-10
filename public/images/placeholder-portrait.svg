@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" width="1000" height="1250" role="img" aria-label="店内写真プレースホルダー（縦長）">
+  <defs>
+    <linearGradient id="portrait-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#161310"/>
+      <stop offset="55%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#050505"/>
+    </linearGradient>
+    <linearGradient id="portrait-goldline" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e4c98a"/>
+      <stop offset="100%" stop-color="#c9a15a"/>
+    </linearGradient>
+    <pattern id="portrait-texture" width="46" height="46" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="46" stroke="#ffffff" stroke-opacity="0.02" stroke-width="46"/>
+    </pattern>
+  </defs>
+  <rect width="1000" height="1250" fill="url(#portrait-bg)"/>
+  <rect width="1000" height="1250" fill="url(#portrait-texture)"/>
+  
+  <rect x="45" y="45" width="910" height="1160" fill="none" stroke="url(#portrait-goldline)" stroke-width="1" opacity="0.55"/>
+  
+  <path d="M 45 95 L 45 45 L 95 45" fill="none" stroke="#e4c98a" stroke-width="1.5" opacity="0.85"/>
+  <path d="M 955 95 L 955 45 L 905 45" fill="none" stroke="#e4c98a" stroke-width="1.5" opacity="0.85"/>
+  <path d="M 45 1155 L 45 1205 L 95 1205" fill="none" stroke="#e4c98a" stroke-width="1.5" opacity="0.85"/>
+  <path d="M 955 1155 L 955 1205 L 905 1205" fill="none" stroke="#e4c98a" stroke-width="1.5" opacity="0.85"/>
+  
+  
+  <g transform="translate(500 625) scale(4.545454545454546)" opacity="0.8">
+    <circle cx="0" cy="-14" r="16" fill="none" stroke="#c9a15a" stroke-width="1.6"/>
+    <path d="M-28,34 C-28,10 -16,-2 0,-2 C16,-2 28,10 28,34" fill="none" stroke="#c9a15a" stroke-width="1.6" stroke-linecap="round"/>
+  </g>
+</svg>
