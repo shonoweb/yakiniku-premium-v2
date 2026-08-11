@@ -1,3 +1,6 @@
+"use client";
+
+import { useReservation } from "@/components/ReservationProvider";
 import PlaceholderImage from "@/components/ui/PlaceholderImage";
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -26,16 +29,18 @@ const infoCards = [
 ];
 
 export default function Access() {
+  const { clearCourse } = useReservation();
+
   return (
-    <section id="access" className="relative bg-ink-soft py-24 sm:py-32">
+    <section id="access" className="relative bg-ink-soft py-20 sm:py-32">
       <div className="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
         <SectionHeading eyebrow="Access" title="特別な夜へ、静かな入口。" align="left" />
 
-        <div className="mt-14 grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
+        <div className="mt-12 grid gap-10 sm:mt-14 lg:grid-cols-2 lg:items-start lg:gap-16">
           <Reveal>
             <PlaceholderImage
               src="/images/access.jpg"
-              alt="店舗の外観・入口のイメージ写真"
+              alt={`${siteConfig.name} 外観`}
               className="aspect-[4/3] w-full"
             />
           </Reveal>
@@ -74,6 +79,7 @@ export default function Access() {
                 </p>
                 <a
                   href="#contact"
+                  onClick={clearCourse}
                   className="inline-block shrink-0 rounded-full bg-gold px-8 py-3 text-center text-sm tracking-widest text-ink transition-colors duration-300 hover:bg-gold-soft"
                 >
                   ご予約はこちら

@@ -28,7 +28,7 @@ const features = [
 
 export default function About() {
   return (
-    <section id="about" className="relative bg-ink py-24 sm:py-32">
+    <section id="about" className="relative bg-ink py-20 sm:py-32">
       <div className="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
         <SectionHeading eyebrow="About" title="一頭の和牛と向き合う、静かな時間。" />
 
@@ -49,7 +49,7 @@ export default function About() {
           ))}
         </div>
 
-        <div className="mt-20 grid gap-12 sm:grid-cols-3 sm:gap-8 lg:mt-28 lg:gap-16">
+        <div className="mt-16 grid gap-10 sm:mt-20 sm:grid-cols-3 sm:gap-8 lg:mt-28 lg:gap-16">
           {features.map((f, i) => (
             <Reveal key={f.num} delay={i * 0.12}>
               <div
@@ -62,7 +62,7 @@ export default function About() {
                 <span className="font-display text-3xl text-gold-deep">{f.num}</span>
                 <h3 className="text-xl font-medium text-ivory">{f.title}</h3>
                 <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
-                <p className="leading-relaxed text-ivory-muted">{f.body}</p>
+                <p className="leading-loose text-ivory-muted sm:leading-relaxed">{f.body}</p>
               </div>
             </Reveal>
           ))}

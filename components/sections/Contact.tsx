@@ -1,14 +1,17 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { useReservation } from "@/components/ReservationProvider";
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
-import { siteConfig } from "@/lib/site-config";
+import { courseNames, siteConfig } from "@/lib/site-config";
+
+const courseOptions = [...courseNames, "席のみ予約", "未定／相談したい"];
 
 const inputClass =
   "w-full border border-ivory/8 bg-ivory/[0.03] px-5 py-4 text-ivory placeholder:text-ivory-muted/40 transition-colors focus:border-gold/60 focus:bg-ivory/[0.05]";
 
-const labelClass = "text-xs tracking-[0.15em] text-ivory-muted";
+const labelClass = "text-sm tracking-[0.1em] text-ivory-muted sm:text-xs sm:tracking-[0.15em]";
 
 function RequiredMark() {
   return (
@@ -20,6 +23,19 @@ function RequiredMark() {
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [course, setCourse] = useState("");
+  const { request } = useReservation();
+
+  // Menuの各コースボタン、またはHero/Header等の通常の予約導線が押されるたびに
+  // request.tokenが変わる。レンダー中に前回tokenとの差分を見て選択状態を
+  // 同期することで、useEffect経由のカスケード再レンダーを避ける
+  // （React公式の「前回のレンダー情報を保持する」パターン）。
+  // 通常導線はrequest.courseが空文字になり、自由選択の状態に戻る。
+  const [lastToken, setLastToken] = useState(request.token);
+  if (request.token !== lastToken) {
+    setLastToken(request.token);
+    setCourse(request.course);
+  }
 
   // 送信APIは未実装。実装時は fetch/Server Action をここに接続する。
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -28,7 +44,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="relative bg-ink py-24 sm:py-32">
+    <section id="contact" className="relative bg-ink py-20 sm:py-32">
       <div className="mx-auto max-w-3xl px-6 sm:px-8 lg:px-12">
         <SectionHeading eyebrow="Contact" title="ご予約・お問い合わせ" />
 
@@ -121,6 +137,46 @@ export default function Contact() {
                   className={`mt-2 ${inputClass}`}
                   placeholder="example@mail.com"
                 />
+              </div>
+
+              <div>
+                <label htmlFor="course" className={labelClass}>
+                  ご希望のコース
+                  <RequiredMark />
+                </label>
+                <div className="relative mt-2">
+                  <select
+                    id="course"
+                    name="course"
+                    required
+                    value={course}
+                    onChange={(event) => setCourse(event.target.value)}
+                    className={`${inputClass} appearance-none pr-12`}
+                  >
+                    <option value="" disabled hidden>
+                      コースを選択してください
+                    </option>
+                    {courseOptions.map((name) => (
+                      <option key={name} value={name} className="bg-ink text-ivory">
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 20 20"
+                    className="pointer-events-none absolute top-1/2 right-5 h-4 w-4 -translate-y-1/2 text-gold"
+                  >
+                    <path
+                      d="M5 7l5 5 5-5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
               </div>
 
               <div className="grid gap-7 sm:grid-cols-3">

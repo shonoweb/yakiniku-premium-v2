@@ -1,18 +1,22 @@
+"use client";
+
 import Image from "next/image";
+import { useReservation } from "@/components/ReservationProvider";
 import PlaceholderImage from "@/components/ui/PlaceholderImage";
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { courseNames } from "@/lib/site-config";
 
 const courses = [
   {
-    name: "竹 -TAKE-",
+    name: courseNames[0],
     price: "¥12,000",
     recommended: false,
     image: "/images/menu-1.jpg",
     items: ["本日の前菜", "厳選3種盛り合わせ", "上タン塩・カルビ・赤身", "〆の一品（ご飯物 or 冷麺）", "デザート"],
   },
   {
-    name: "松 -MATSU-",
+    name: courseNames[1],
     price: "¥18,000",
     recommended: true,
     image: "/images/menu-2.jpg",
@@ -26,7 +30,7 @@ const courses = [
     ],
   },
   {
-    name: "極 -KIWAMI-",
+    name: courseNames[2],
     price: "¥28,000",
     recommended: false,
     image: "/images/menu-3.jpg",
@@ -42,17 +46,55 @@ const courses = [
 ];
 
 const alaCarte = [
-  { name: "特選ロース", price: "¥4,800", note: "きめ細やかな霜降りの一皿" },
-  { name: "上ハラミ", price: "¥3,600", note: "赤身の旨みと柔らかな噛み心地" },
-  { name: "シャトーブリアン", price: "¥7,800", note: "一頭からわずかな極上部位" },
-  { name: "特選ユッケ", price: "¥2,800", note: "職人が手切りで仕上げる一品" },
-  { name: "特製冷麺", price: "¥1,600", note: "〆に人気の自家製麺" },
-  { name: "厳選ワインペアリング", price: "¥3,500〜", note: "ソムリエ厳選の一杯" },
+  {
+    name: "特選ロース",
+    price: "¥4,800",
+    note: "きめ細やかな霜降りの一皿",
+    image: "/images/menu-tokusen-loin.jpg",
+    alt: "黒毛和牛の特選ロース",
+  },
+  {
+    name: "上ハラミ",
+    price: "¥3,600",
+    note: "赤身の旨みと柔らかな噛み心地",
+    image: "/images/menu-jyo-harami.jpg",
+    alt: "黒毛和牛の上ハラミ",
+  },
+  {
+    name: "シャトーブリアン",
+    price: "¥7,800",
+    note: "一頭からわずかな極上部位",
+    image: "/images/menu-chateaubriand.jpg",
+    alt: "黒毛和牛のシャトーブリアン",
+  },
+  {
+    name: "特選タン",
+    price: "¥3,800",
+    note: "厚切りで愉しむ、上質な旨み",
+    image: "/images/menu-tokusen-tan.jpg",
+    alt: "特選タン",
+  },
+  {
+    name: "サーロイン焼きすき",
+    price: "¥4,500",
+    note: "濃厚な卵黄と味わう、極上の一枚",
+    image: "/images/menu-sirloin-sukiyaki.jpg",
+    alt: "サーロイン焼きすき",
+  },
+  {
+    name: "厳選和牛盛り合わせ",
+    price: "¥8,800",
+    note: "選び抜いた黒毛和牛を、一皿に",
+    image: "/images/menu-wagyu-assortment.jpg",
+    alt: "厳選黒毛和牛盛り合わせ",
+  },
 ];
 
 export default function Menu() {
+  const { selectCourse } = useReservation();
+
   return (
-    <section id="menu" className="relative bg-ink-soft py-24 sm:py-32">
+    <section id="menu" className="relative bg-ink-soft py-20 sm:py-32">
       <div className="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
         <SectionHeading
           eyebrow="Menu"
@@ -60,7 +102,7 @@ export default function Menu() {
           subtitle="仕入れによって内容は変わります。おまかせコースを軸に、その日いちばんの部位を単品でもお愉しみいただけます。表示は全て税込・サービス料別途10%を頂戴しております。"
         />
 
-        <div className="mt-16 grid gap-8 sm:gap-6 lg:mt-20 lg:grid-cols-3 lg:gap-8">
+        <div className="mt-14 grid gap-8 sm:mt-16 sm:gap-6 lg:mt-20 lg:grid-cols-3 lg:gap-8">
           {courses.map((course, i) => (
             <Reveal key={course.name} delay={i * 0.12} className="h-full">
               <div
@@ -73,7 +115,7 @@ export default function Menu() {
                 <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[5/4]">
                   <Image
                     src={course.image}
-                    alt={`${course.name}コースの一例`}
+                    alt={`黒毛和牛 ${course.name}コースの一例`}
                     fill
                     sizes="(min-width: 1024px) 33vw, 100vw"
                     className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
@@ -104,6 +146,7 @@ export default function Menu() {
                   </ul>
                   <a
                     href="#contact"
+                    onClick={() => selectCourse(course.name)}
                     className="mt-8 block rounded-full border border-gold/50 py-3 text-center text-sm tracking-widest text-gold transition-colors hover:bg-gold hover:text-ink"
                   >
                     このコースを予約する
@@ -114,7 +157,7 @@ export default function Menu() {
           ))}
         </div>
 
-        <div className="mt-24">
+        <div className="mt-20 sm:mt-24">
           <Reveal>
             <h3 className="font-display text-sm uppercase tracking-[0.35em] text-gold">
               A la carte
@@ -127,12 +170,16 @@ export default function Menu() {
               <Reveal key={item.name} delay={i * 0.06} as="li">
                 <div className="group">
                   <PlaceholderImage
-                    src="/images/placeholder-square.svg"
-                    alt={`${item.name}のイメージ写真（準備中・実写真に差し替え予定）`}
+                    src={item.image ?? "/images/placeholder-square.svg"}
+                    alt={
+                      item.image
+                        ? item.alt
+                        : `${item.name}のイメージ写真（準備中・実写真に差し替え予定）`
+                    }
                     className="aspect-square w-full"
                   />
-                  <h4 className="mt-3 text-sm font-medium text-ivory">{item.name}</h4>
-                  <p className="text-xs text-ivory-muted">{item.note}</p>
+                  <h4 className="mt-3 text-base font-medium text-ivory sm:text-sm">{item.name}</h4>
+                  <p className="text-sm text-ivory-muted sm:text-xs">{item.note}</p>
                   <p className="mt-1 font-display text-gold">{item.price}</p>
                 </div>
               </Reveal>

@@ -3,11 +3,13 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { useReservation } from "@/components/ReservationProvider";
 import { gsap } from "@/lib/gsap";
 import { siteConfig } from "@/lib/site-config";
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
+  const { clearCourse } = useReservation();
   const imgWrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -96,6 +98,7 @@ export default function Hero() {
         >
           <a
             href="#contact"
+            onClick={clearCourse}
             className="rounded-full bg-gold px-8 py-3 text-sm tracking-widest text-ink transition-transform duration-300 hover:scale-[1.03] hover:bg-gold-soft"
           >
             ご予約はこちら

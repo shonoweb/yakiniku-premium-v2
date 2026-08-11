@@ -2,11 +2,13 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useReservation } from "@/components/ReservationProvider";
 import { navLinks, siteConfig } from "@/lib/site-config";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { clearCourse } = useReservation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -61,6 +63,7 @@ export default function Header() {
             ))}
             <a
               href="#contact"
+              onClick={clearCourse}
               className="rounded-full border border-gold/60 px-5 py-2 text-sm tracking-widest text-gold transition-colors hover:bg-gold hover:text-ink"
             >
               ご予約
@@ -94,7 +97,10 @@ export default function Header() {
                 <li className="pt-3">
                   <a
                     href="#contact"
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      setOpen(false);
+                      clearCourse();
+                    }}
                     className="block rounded-full border border-gold/60 px-5 py-3 text-center text-gold"
                   >
                     ご予約はこちら

@@ -68,7 +68,7 @@ export default function Gallery() {
   }, []);
 
   return (
-    <section id="gallery" className="relative bg-ink py-24 sm:py-32">
+    <section id="gallery" className="relative bg-ink py-20 sm:py-32">
       <div className="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
         <SectionHeading
           eyebrow="Gallery"
@@ -78,7 +78,7 @@ export default function Gallery() {
 
         <ul
           ref={containerRef}
-          className="mt-16 grid auto-rows-[220px] grid-cols-2 gap-4 sm:auto-rows-[240px] sm:grid-cols-4 lg:mt-20 lg:gap-5"
+          className="mt-14 grid auto-rows-[220px] grid-cols-2 gap-4 sm:mt-16 sm:auto-rows-[240px] sm:grid-cols-4 lg:mt-20 lg:gap-5"
         >
           {items.map((item, i) => (
             <li

@@ -1,39 +1,47 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Noto_Sans_JP, Shippori_Mincho } from "next/font/google";
+import { ReservationProvider } from "@/components/ReservationProvider";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
+// ウェイト/スタイルは、サイト内で実際に使用しているものだけに限定している
+// （本文=400のみ、見出しのfont-mediumは500のみ、italicは未使用）。
+// Noto Sans JP / Shippori Mincho は「latin」指定でもCJKグリフを含む大量の
+// unicode-range分割@font-faceが生成されるため、ウェイト数がそのままCSSサイズに
+// 直結する。未使用ウェイトを削るだけで見た目を変えずにCSSを大幅に削減できる。
 const notoSansJP = Noto_Sans_JP({
   variable: "--font-noto-sans-jp",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
+  weight: ["400"],
   display: "swap",
 });
 
 const shipporiMincho = Shippori_Mincho({
   variable: "--font-shippori-mincho",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["500"],
   display: "swap",
 });
 
 const cormorantGaramond = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+  weight: ["400"],
+  style: ["normal"],
   display: "swap",
 });
+
+const seoTitle = `${siteConfig.name} | 東京・南青山の高級焼肉店`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name}｜東京・南青山の高級焼肉店`,
-    template: `%s｜${siteConfig.shortName}`,
+    default: seoTitle,
+    template: `%s | ${siteConfig.shortName}`,
   },
-  description: siteConfig.description,
+  description: siteConfig.metaDescription,
   keywords: ["焼肉", "高級焼肉", "南青山", "黒毛和牛", "接待", "記念日", "個室", "炭火焼肉"],
   authors: [{ name: siteConfig.name }],
   alternates: {
@@ -44,8 +52,8 @@ export const metadata: Metadata = {
     locale: "ja_JP",
     url: siteConfig.url,
     siteName: siteConfig.name,
-    title: `${siteConfig.name}｜東京・南青山の高級焼肉店`,
-    description: siteConfig.description,
+    title: seoTitle,
+    description: siteConfig.metaDescription,
     images: [
       {
         url: siteConfig.ogImage,
@@ -57,13 +65,18 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name}｜東京・南青山の高級焼肉店`,
-    description: siteConfig.description,
+    title: seoTitle,
+    description: siteConfig.metaDescription,
     images: [siteConfig.ogImage],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+    },
   },
 };
 
@@ -82,7 +95,7 @@ const restaurantJsonLd = {
   telephone: siteConfig.telephone,
   priceRange: siteConfig.priceRange,
   servesCuisine: "Yakiniku",
-  description: siteConfig.description,
+  description: siteConfig.metaDescription,
   address: {
     "@type": "PostalAddress",
     streetAddress: siteConfig.address.street,
@@ -146,11 +159,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantJsonLd) }}
         />
-        <Header />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <ReservationProvider>
+          <Header />
+          <main id="main-content" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </ReservationProvider>
       </body>
     </html>
   );

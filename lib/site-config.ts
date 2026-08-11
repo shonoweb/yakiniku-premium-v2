@@ -3,6 +3,16 @@
  * 実店舗の情報が確定したら、このファイルの値だけを差し替えれば全ページに反映される。
  */
 
+/**
+ * 本番URL。実際のドメインが決まったら、Vercel等の環境変数
+ * `NEXT_PUBLIC_SITE_URL`（例: https://akari-yakiniku.jp）を設定するだけでよい。
+ * 未設定時（ローカル開発など）は localhost にフォールバックする。
+ * metadataBase / canonical / OGP / JSON-LD / sitemap / robots が全てここを参照する。
+ */
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+).replace(/\/$/, "");
+
 export const siteConfig = {
   name: "焼肉 燈 -AKARI-",
   nameEn: "YAKINIKU AKARI",
@@ -10,7 +20,10 @@ export const siteConfig = {
   tagline: "炭火が灯す、極上の一夜。",
   description:
     "厳選した黒毛和牛を最良の状態で。東京・南青山の隠れ家で、炭火焼肉の神髄を味わう会員制サロンのような一軒。特別な夜のための、静謐な空間をご用意しております。",
-  url: "https://akari-yakiniku.example.jp",
+  /** 検索結果・OGP・JSON-LD用のdescription（サイト内表示文とは別に管理） */
+  metaDescription:
+    "東京・南青山の高級焼肉店「焼肉 燈 -AKARI-」。厳選した黒毛和牛と炭火焼肉を、落ち着いた上質な空間でお楽しみいただけます。記念日・接待・特別な日のディナーにもご利用ください。",
+  url: SITE_URL,
   ogImage: "/opengraph-image",
   telephone: "03-0000-0000",
   telephoneDisplay: "03-0000-0000",
@@ -37,6 +50,12 @@ export const siteConfig = {
   priceRange: "¥¥¥¥",
   reservationNote: "ご予約はお電話、またはフォームより承っております。",
 } as const;
+
+/**
+ * Menuセクションのコース名（予約フォームのコース選択と共有する単一の情報源）。
+ * コースの詳細内容（価格・内容・写真）は components/sections/Menu.tsx 側で管理する。
+ */
+export const courseNames = ["竹 -TAKE-", "松 -MATSU-", "極 -KIWAMI-"] as const;
 
 export const navLinks = [
   { href: "#about", label: "About", labelJa: "当店について" },

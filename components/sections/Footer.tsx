@@ -1,13 +1,17 @@
+"use client";
+
+import { useReservation } from "@/components/ReservationProvider";
 import Container from "@/components/ui/Container";
 import { navLinks, siteConfig } from "@/lib/site-config";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const { clearCourse } = useReservation();
 
   return (
     <footer className="relative border-t border-ink-line bg-ink pt-12 pb-16 sm:pt-14">
       <Container>
-        <div className="grid gap-12 sm:grid-cols-3">
+        <div className="grid gap-10 sm:grid-cols-3 sm:gap-12">
           <div>
             <p className="font-serif text-2xl text-ivory">{siteConfig.shortName}</p>
             <p className="mt-2 text-sm text-ivory-muted">炭火焼肉 燈</p>
@@ -40,12 +44,12 @@ export default function Footer() {
 
           <nav aria-label="フッターナビゲーション">
             <p className="text-sm tracking-widest text-gold">Menu</p>
-            <ul className="mt-4 flex flex-col gap-2">
+            <ul className="mt-2 flex flex-col">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-sm text-ivory-muted transition-colors hover:text-gold"
+                    className="block py-2 text-sm text-ivory-muted transition-colors hover:text-gold"
                   >
                     {link.labelJa}
                   </a>
@@ -90,6 +94,7 @@ export default function Footer() {
 
             <a
               href="#contact"
+              onClick={clearCourse}
               className="mt-6 inline-block rounded-full border border-gold/60 px-5 py-2 text-sm tracking-widest text-gold transition-colors hover:bg-gold hover:text-ink"
             >
               ご予約はこちら
@@ -97,13 +102,13 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col-reverse items-center justify-between gap-4 border-t border-ink-line pt-8 sm:flex-row">
+        <div className="mt-12 flex flex-col-reverse items-center justify-between gap-4 border-t border-ink-line pt-8 sm:mt-16 sm:flex-row">
           <p className="text-xs tracking-wide text-ivory-muted">
             &copy; {year} {siteConfig.nameEn}. All Rights Reserved.
           </p>
           <a
             href="#top"
-            className="text-xs tracking-widest text-ivory-muted transition-colors hover:text-gold"
+            className="py-1 text-xs tracking-widest text-ivory-muted transition-colors hover:text-gold"
           >
             ページトップへ ↑
           </a>
