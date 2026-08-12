@@ -81,14 +81,15 @@ export default function Hero() {
           {siteConfig.tagline}
         </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-6 max-w-xl text-base leading-relaxed text-ivory-muted text-balance sm:text-lg"
-        >
+        {/*
+          LCP候補要素。Framer Motionのopacity:0初期状態+delayで
+          ハイドレーション後まで描画が遅延していたため(Lighthouse計測で
+          Element Render Delay 約2.2秒)、意図的にアニメーションなしの
+          プレーンなpタグとし、初回HTML描画時点で即座に表示されるようにする。
+        */}
+        <p className="mt-6 max-w-xl text-base leading-relaxed text-ivory-muted text-balance sm:text-lg">
           {siteConfig.description}
-        </motion.p>
+        </p>
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}

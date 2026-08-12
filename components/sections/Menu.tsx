@@ -176,6 +176,7 @@ export default function Menu() {
                         ? item.alt
                         : `${item.name}のイメージ写真（準備中・実写真に差し替え予定）`
                     }
+                    sizes="(min-width: 1024px) 192px, (min-width: 640px) 30vw, 45vw"
                     className="aspect-square w-full"
                   />
                   <h4 className="mt-3 text-base font-medium text-ivory sm:text-sm">{item.name}</h4>
