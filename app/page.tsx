@@ -1,6 +1,6 @@
 import About from "@/components/sections/About";
 import Access from "@/components/sections/Access";
-import Contact from "@/components/sections/Contact";
+import Contact from "@/components/sections/ContactLazy";
 import Gallery from "@/components/sections/Gallery";
 import Hero from "@/components/sections/Hero";
 import Menu from "@/components/sections/Menu";
