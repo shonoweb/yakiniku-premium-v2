@@ -1,3 +1,4 @@
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Noto_Sans_JP, Shippori_Mincho } from "next/font/google";
 import { ReservationProvider } from "@/components/ReservationProvider";
@@ -34,6 +35,8 @@ const cormorantGaramond = Cormorant_Garamond({
 });
 
 const seoTitle = `${siteConfig.name} | 東京・南青山の高級焼肉店`;
+
+const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -166,6 +169,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </main>
           <Footer />
         </ReservationProvider>
+        {gaId && <GoogleAnalytics gaId={gaId} />}
       </body>
     </html>
   );
