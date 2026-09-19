@@ -94,7 +94,10 @@ export default function Menu() {
   const { selectCourse } = useReservation();
 
   return (
-    <section id="menu" className="relative bg-ink-soft py-20 sm:py-32">
+    <section
+      id="menu"
+      className="relative bg-ink-soft py-20 sm:py-32 [content-visibility:auto] [contain-intrinsic-height:auto_3400px] lg:[contain-intrinsic-height:auto_1600px]"
+    >
       <div className="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
         <SectionHeading
           eyebrow="Menu"
