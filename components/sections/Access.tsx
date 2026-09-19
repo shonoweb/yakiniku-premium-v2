@@ -32,10 +32,7 @@ export default function Access() {
   const { clearCourse } = useReservation();
 
   return (
-    <section
-      id="access"
-      className="relative bg-ink-soft py-20 sm:py-32 [content-visibility:auto] [contain-intrinsic-height:auto_1400px] lg:[contain-intrinsic-height:auto_900px]"
-    >
+    <section id="access" className="relative bg-ink-soft py-20 sm:py-32">
       <div className="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
         <SectionHeading eyebrow="Access" title="特別な夜へ、静かな入口。" align="left" />
 

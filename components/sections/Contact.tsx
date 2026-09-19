@@ -44,10 +44,7 @@ export default function Contact() {
   }
 
   return (
-    <section
-      id="contact"
-      className="relative bg-ink py-20 sm:py-32 [content-visibility:auto] [contain-intrinsic-height:auto_1800px] lg:[contain-intrinsic-height:auto_1450px]"
-    >
+    <section id="contact" className="relative bg-ink py-20 sm:py-32">
       <div className="mx-auto max-w-3xl px-6 sm:px-8 lg:px-12">
         <SectionHeading eyebrow="Contact" title="ご予約・お問い合わせ" />
 

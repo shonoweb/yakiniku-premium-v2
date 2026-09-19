@@ -9,7 +9,7 @@ export default function Footer() {
   const { clearCourse } = useReservation();
 
   return (
-    <footer className="relative border-t border-ink-line bg-ink pt-12 pb-16 sm:pt-14 [content-visibility:auto] [contain-intrinsic-height:auto_970px] lg:[contain-intrinsic-height:auto_530px]">
+    <footer className="relative border-t border-ink-line bg-ink pt-12 pb-16 sm:pt-14">
       <Container>
         <div className="grid gap-10 sm:grid-cols-3 sm:gap-12">
           <div>
