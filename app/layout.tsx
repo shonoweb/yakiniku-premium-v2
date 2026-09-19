@@ -1,36 +1,44 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Noto_Sans_JP, Shippori_Mincho } from "next/font/google";
+import localFont from "next/font/local";
 import { ReservationProvider } from "@/components/ReservationProvider";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
-// ウェイト/スタイルは、サイト内で実際に使用しているものだけに限定している
-// （本文=400のみ、見出しのfont-mediumは500のみ、italicは未使用）。
-// Noto Sans JP / Shippori Mincho は「latin」指定でもCJKグリフを含む大量の
-// unicode-range分割@font-faceが生成されるため、ウェイト数がそのままCSSサイズに
-// 直結する。未使用ウェイトを削るだけで見た目を変えずにCSSを大幅に削減できる。
-const notoSansJP = Noto_Sans_JP({
+/**
+ * 診断用A/Bテスト(perf/hero-lightweight-animation): next/font/google が
+ * Noto Sans JP / Shippori Mincho に対して生成するCJK unicode-range分割の
+ * render-blocking CSS(合計約75KB gzip・254個の@font-face宣言)を、サイト内で
+ * 実際に使用している文字だけを含むセルフホストサブセットに置き換える。
+ * サブセットはGoogle Fonts公式のcss2 API `text=`パラメータ(Vercel公式が
+ * OG画像生成でも推奨する手法。lib/og-font.tsで既に同じ手法を使用中)で
+ * 生成し、fonttoolsでWOFF2化したもの(app/fonts/配下)。
+ * family名・weight・style・display・CSS変数名は変更前と完全に同一。
+ * サブセットに含まれない文字(フォーム入力時のユーザー入力等)は、
+ * 既存のfont-family fallbackスタック(globals.cssのsans-serif/serif)へ
+ * 自動的にフォールバックするため、文字化けは発生しない。
+ */
+const notoSansJP = localFont({
+  src: "./fonts/noto-sans-jp-subset.woff2",
   variable: "--font-noto-sans-jp",
-  subsets: ["latin"],
-  weight: ["400"],
+  weight: "400",
   display: "swap",
 });
 
-const shipporiMincho = Shippori_Mincho({
+const shipporiMincho = localFont({
+  src: "./fonts/shippori-mincho-subset.woff2",
   variable: "--font-shippori-mincho",
-  subsets: ["latin"],
-  weight: ["500"],
+  weight: "500",
   display: "swap",
 });
 
-const cormorantGaramond = Cormorant_Garamond({
+const cormorantGaramond = localFont({
+  src: "./fonts/cormorant-garamond-subset.woff2",
   variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
+  weight: "400",
+  style: "normal",
   display: "swap",
 });
 
