@@ -5,11 +5,10 @@ import { useReservation } from "@/components/ReservationProvider";
 import { siteConfig } from "@/lib/site-config";
 
 /**
- * TEST1(perf/hero-lightweight-animation): eyebrow/h1/CTAの初回表示演出を
- * Framer Motionではなく純粋なCSS animation(globals.cssの--animate-hero-reveal)
- * で再現する。duration・delay・easing・移動量はFramer Motion版と同一値。
- * LCP要素である説明文<p>には一切アニメーションを付けず、常に即表示のまま。
- * prefers-reduced-motionはグローバルのanimation-duration上書きで自動的に無効化される。
+ * eyebrow/h1/CTAの初回表示演出は、Framer Motionではなく純粋なCSS animation
+ * (globals.cssの--animate-hero-reveal)で再現している。duration・delay・
+ * easing・移動量は旧Framer Motion版と同一値。prefers-reduced-motionは
+ * グローバルのanimation-duration上書きで自動的に無効化される。
  */
 export default function Hero() {
   const { clearCourse } = useReservation();
@@ -55,6 +54,7 @@ export default function Hero() {
           {siteConfig.tagline}
         </h1>
 
+        {/* LCP要素。ハイドレーション待ちの描画遅延を避けるため、アニメーションを付けず常に即表示する */}
         <p className="mt-6 max-w-xl text-base leading-relaxed text-ivory-muted text-balance sm:text-lg">
           {siteConfig.description}
         </p>

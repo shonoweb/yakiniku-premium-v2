@@ -41,9 +41,9 @@
   }
 
   /*
-   * Hero専用の軽量CSSアニメーション(診断branch: perf/hero-lightweight-animation)。
-   * Framer Motionのinitial/animate(eyebrow・h1・CTA)と同じduration/easing/delay/移動量を
-   * 純粋なCSS animationで再現し、JS実行(main-thread占有)なしで初回描画から動作させる。
+   * Hero専用の軽量CSSアニメーション。以前のFramer Motion版のinitial/animate
+   * (eyebrow・h1・CTA)と同じduration/easing/delay/移動量を、JS実行なしの
+   * 純粋なCSS animationで再現し、main-threadを占有せず初回描画から動作する。
    * fill-mode: both により、animation-delay中も"from"状態(opacity:0)を維持するため、
    * ちらつきなくFramer Motion版と同じ見た目になる。
    */

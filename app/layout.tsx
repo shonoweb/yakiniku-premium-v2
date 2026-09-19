@@ -8,17 +8,16 @@ import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
 /**
- * 診断用A/Bテスト(perf/hero-lightweight-animation): next/font/google が
- * Noto Sans JP / Shippori Mincho に対して生成するCJK unicode-range分割の
- * render-blocking CSS(合計約75KB gzip・254個の@font-face宣言)を、サイト内で
- * 実際に使用している文字だけを含むセルフホストサブセットに置き換える。
- * サブセットはGoogle Fonts公式のcss2 API `text=`パラメータ(Vercel公式が
- * OG画像生成でも推奨する手法。lib/og-font.tsで既に同じ手法を使用中)で
- * 生成し、fonttoolsでWOFF2化したもの(app/fonts/配下)。
- * family名・weight・style・display・CSS変数名は変更前と完全に同一。
+ * next/font/google はNoto Sans JP / Shippori Minchoに対して大量の
+ * CJK unicode-range分割@font-faceを生成し、render-blocking CSSが
+ * 肥大化する(未使用文字向けの宣言が大半を占める)。サイト内で実際に
+ * 使用している文字だけを含むセルフホストサブセット(app/fonts/配下、
+ * Google Fonts公式css2 API `text=`パラメータで生成しfonttoolsでWOFF2化。
+ * lib/og-font.tsのOG画像生成と同じ手法)に置き換えている。
+ * family名・weight・style・display・CSS変数名は元のGoogle Fonts版と同一。
  * サブセットに含まれない文字(フォーム入力時のユーザー入力等)は、
  * 既存のfont-family fallbackスタック(globals.cssのsans-serif/serif)へ
- * 自動的にフォールバックするため、文字化けは発生しない。
+ * 自動的にフォールバックするため文字化けは発生しない。
  */
 const notoSansJP = localFont({
   src: "./fonts/noto-sans-jp-subset.woff2",
