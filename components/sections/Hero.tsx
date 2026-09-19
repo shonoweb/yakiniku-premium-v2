@@ -1,47 +1,26 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
 import { useReservation } from "@/components/ReservationProvider";
-import { gsap } from "@/lib/gsap";
 import { siteConfig } from "@/lib/site-config";
 
+/**
+ * 診断用A/Bテスト（perf/hero-hydration-isolation）:
+ * GSAP(ScrollTriggerパララックス) / Framer Motion(初期フェードイン)を
+ * 一時的に完全停止し、Hero固有のJS実行量がLCP/main-threadにどの程度
+ * 寄与しているかを検証する。最終的な見た目(opacity:1, transform無し)は
+ * 変更前のアニメーション到達後の状態と同一になるよう、
+ * plainな要素に置き換えている。本番デザイン変更ではない。
+ */
 export default function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
   const { clearCourse } = useReservation();
-  const imgWrapRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!imgWrapRef.current || !sectionRef.current) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const ctx = gsap.context(() => {
-      gsap.to(imgWrapRef.current, {
-        y: 90,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
 
   return (
     <section
       id="top"
-      ref={sectionRef}
       className="relative flex h-[100svh] min-h-[640px] w-full items-center justify-center overflow-hidden bg-ink"
     >
-      <div
-        ref={imgWrapRef}
-        className="absolute inset-x-0 -top-[15%] h-[130%] w-full will-change-transform"
-      >
+      <div className="absolute inset-x-0 -top-[15%] h-[130%] w-full will-change-transform">
         <Image
           src="/images/hero.jpg"
           alt="炭火で焼き上げる黒毛和牛"
@@ -63,40 +42,19 @@ export default function Hero() {
       />
 
       <div className="relative z-10 flex flex-col items-center px-6 text-center">
-        <motion.span
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display text-sm uppercase tracking-[0.5em] text-gold-soft"
-        >
+        <span className="font-display text-sm uppercase tracking-[0.5em] text-gold-soft">
           {siteConfig.nameEn}
-        </motion.span>
+        </span>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-6 text-4xl leading-snug font-medium text-ivory text-balance sm:text-5xl lg:text-6xl"
-        >
+        <h1 className="mt-6 text-4xl leading-snug font-medium text-ivory text-balance sm:text-5xl lg:text-6xl">
           {siteConfig.tagline}
-        </motion.h1>
+        </h1>
 
-        {/*
-          LCP候補要素。Framer Motionのopacity:0初期状態+delayで
-          ハイドレーション後まで描画が遅延していたため(Lighthouse計測で
-          Element Render Delay 約2.2秒)、意図的にアニメーションなしの
-          プレーンなpタグとし、初回HTML描画時点で即座に表示されるようにする。
-        */}
         <p className="mt-6 max-w-xl text-base leading-relaxed text-ivory-muted text-balance sm:text-lg">
           {siteConfig.description}
         </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-10 flex flex-col gap-4 sm:flex-row"
-        >
+        <div className="mt-10 flex flex-col gap-4 sm:flex-row">
           <a
             href="#contact"
             onClick={clearCourse}
@@ -110,7 +68,7 @@ export default function Hero() {
           >
             メニューを見る
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
