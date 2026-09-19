@@ -1,6 +1,6 @@
-import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Noto_Sans_JP, Shippori_Mincho } from "next/font/google";
+import GoogleAnalyticsLazy from "@/components/GoogleAnalyticsLazy";
 import { ReservationProvider } from "@/components/ReservationProvider";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
@@ -169,7 +169,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </main>
           <Footer />
         </ReservationProvider>
-        {gaId && <GoogleAnalytics gaId={gaId} />}
+        {gaId && <GoogleAnalyticsLazy gaId={gaId} />}
       </body>
     </html>
   );
