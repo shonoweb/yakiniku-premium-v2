@@ -1,36 +1,43 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Noto_Sans_JP, Shippori_Mincho } from "next/font/google";
+import localFont from "next/font/local";
 import { ReservationProvider } from "@/components/ReservationProvider";
 import Footer from "@/components/sections/Footer";
 import Header from "@/components/sections/Header";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
-// ウェイト/スタイルは、サイト内で実際に使用しているものだけに限定している
-// （本文=400のみ、見出しのfont-mediumは500のみ、italicは未使用）。
-// Noto Sans JP / Shippori Mincho は「latin」指定でもCJKグリフを含む大量の
-// unicode-range分割@font-faceが生成されるため、ウェイト数がそのままCSSサイズに
-// 直結する。未使用ウェイトを削るだけで見た目を変えずにCSSを大幅に削減できる。
-const notoSansJP = Noto_Sans_JP({
+/**
+ * next/font/google はNoto Sans JP / Shippori Minchoに対して大量の
+ * CJK unicode-range分割@font-faceを生成し、render-blocking CSSが
+ * 肥大化する(未使用文字向けの宣言が大半を占める)。サイト内で実際に
+ * 使用している文字だけを含むセルフホストサブセット(app/fonts/配下、
+ * Google Fonts公式css2 API `text=`パラメータで生成しfonttoolsでWOFF2化。
+ * lib/og-font.tsのOG画像生成と同じ手法)に置き換えている。
+ * family名・weight・style・display・CSS変数名は元のGoogle Fonts版と同一。
+ * サブセットに含まれない文字(フォーム入力時のユーザー入力等)は、
+ * 既存のfont-family fallbackスタック(globals.cssのsans-serif/serif)へ
+ * 自動的にフォールバックするため文字化けは発生しない。
+ */
+const notoSansJP = localFont({
+  src: "./fonts/noto-sans-jp-subset.woff2",
   variable: "--font-noto-sans-jp",
-  subsets: ["latin"],
-  weight: ["400"],
+  weight: "400",
   display: "swap",
 });
 
-const shipporiMincho = Shippori_Mincho({
+const shipporiMincho = localFont({
+  src: "./fonts/shippori-mincho-subset.woff2",
   variable: "--font-shippori-mincho",
-  subsets: ["latin"],
-  weight: ["500"],
+  weight: "500",
   display: "swap",
 });
 
-const cormorantGaramond = Cormorant_Garamond({
+const cormorantGaramond = localFont({
+  src: "./fonts/cormorant-garamond-subset.woff2",
   variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
+  weight: "400",
+  style: "normal",
   display: "swap",
 });
 
