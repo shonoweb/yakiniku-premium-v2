@@ -1,80 +1,25 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
 import { useReservation } from "@/components/ReservationProvider";
-import { gsap } from "@/lib/gsap";
 import { siteConfig } from "@/lib/site-config";
 
 /**
- * TEST3(perf/hero-lightweight-animation): TEST1のCSSアニメーションに加え、
- * Hero画像のスクロール連動GSAP ScrollTrigger(パララックス)を復元する。
- * ただし初回paint/hydrationと競合させないよう、requestIdleCallback
- * (非対応環境ではload後のrequestAnimationFrame)まで初期化を遅延させる。
- * scrub:trueのためScrollTriggerは生成された瞬間の現在スクロール位置から
- * 追従するので、遅延初期化してもユーザーが先にスクロールしていた場合の
- * 視覚的なジャンプは発生しない。
+ * TEST1(perf/hero-lightweight-animation): eyebrow/h1/CTAの初回表示演出を
+ * Framer Motionではなく純粋なCSS animation(globals.cssの--animate-hero-reveal)
+ * で再現する。duration・delay・easing・移動量はFramer Motion版と同一値。
+ * LCP要素である説明文<p>には一切アニメーションを付けず、常に即表示のまま。
+ * prefers-reduced-motionはグローバルのanimation-duration上書きで自動的に無効化される。
  */
 export default function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const imgWrapRef = useRef<HTMLDivElement>(null);
   const { clearCourse } = useReservation();
-
-  useEffect(() => {
-    if (!imgWrapRef.current || !sectionRef.current) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let ctx: ReturnType<typeof gsap.context> | undefined;
-    let idleHandle: number | undefined;
-    let rafHandle: number | undefined;
-    let loadListener: (() => void) | undefined;
-
-    const init = () => {
-      ctx = gsap.context(() => {
-        gsap.to(imgWrapRef.current, {
-          y: 90,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      }, sectionRef);
-    };
-
-    if (typeof window.requestIdleCallback === "function") {
-      idleHandle = window.requestIdleCallback(init, { timeout: 2000 });
-    } else if (document.readyState === "complete") {
-      rafHandle = requestAnimationFrame(init);
-    } else {
-      loadListener = () => {
-        rafHandle = requestAnimationFrame(init);
-      };
-      window.addEventListener("load", loadListener, { once: true });
-    }
-
-    return () => {
-      if (idleHandle !== undefined && typeof window.cancelIdleCallback === "function") {
-        window.cancelIdleCallback(idleHandle);
-      }
-      if (rafHandle !== undefined) cancelAnimationFrame(rafHandle);
-      if (loadListener) window.removeEventListener("load", loadListener);
-      ctx?.revert();
-    };
-  }, []);
 
   return (
     <section
       id="top"
-      ref={sectionRef}
       className="relative flex h-[100svh] min-h-[640px] w-full items-center justify-center overflow-hidden bg-ink"
     >
-      <div
-        ref={imgWrapRef}
-        className="absolute inset-x-0 -top-[15%] h-[130%] w-full will-change-transform"
-      >
+      <div className="absolute inset-x-0 -top-[15%] h-[130%] w-full will-change-transform">
         <Image
           src="/images/hero.jpg"
           alt="炭火で焼き上げる黒毛和牛"
