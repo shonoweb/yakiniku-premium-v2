@@ -1,6 +1,4 @@
-"use client";
-
-import { useReservation } from "@/components/ReservationProvider";
+import ClearCourseLink from "@/components/ui/ClearCourseLink";
 import PlaceholderImage from "@/components/ui/PlaceholderImage";
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -29,8 +27,6 @@ const infoCards = [
 ];
 
 export default function Access() {
-  const { clearCourse } = useReservation();
-
   return (
     <section id="access" className="relative bg-ink-soft py-20 sm:py-32">
       <div className="mx-auto max-w-6xl px-6 sm:px-8 lg:px-12">
@@ -77,13 +73,12 @@ export default function Access() {
                 <p className="text-sm leading-relaxed text-ivory-muted">
                   {siteConfig.reservationNote}
                 </p>
-                <a
+                <ClearCourseLink
                   href="#contact"
-                  onClick={clearCourse}
                   className="inline-block shrink-0 rounded-full bg-gold px-8 py-3 text-center text-sm tracking-widest text-ink transition-colors duration-300 hover:bg-gold-soft"
                 >
                   ご予約はこちら
-                </a>
+                </ClearCourseLink>
               </div>
             </Reveal>
           </div>
